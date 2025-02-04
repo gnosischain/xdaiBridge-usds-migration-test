@@ -1,66 +1,53 @@
-## Foundry
+# USDS xDAI bridge migrtion test
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository simulate the end to end test on Sepolia<->Chiado, with bridge validator running.
 
-Foundry consists of:
+## Test workflow
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+1. Relay DAI to normal xDAI bridge (DAI as ERC20 token) on Sepolia.
+2. Run validator that listens to the normal xDAI bridge and call `executeAffirmations` on Chiado.
+3. Mock USDS upgrade by switching interacting contract with USDS upgraded xDAI bridge and run a new set of validator that listens to that new xDAI bridge address, and call `executeAffirmations` on Chiado.
+4. Relay USDS to the new xDAI bridge (USDS as ERC20 token) on Sepolia.
 
-## Documentation
+## Dev
 
-https://book.getfoundry.sh/
+Install
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```
+forge install
+npm install
 ```
 
-### Test
+Configuration
 
-```shell
-$ forge test
+```
+cp .env.example .env
 ```
 
-### Format
+Setup
+DAI_USER_PRIVATE_KEY= # DAI & USDS holder on Sepolia
+ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY= # bridge validator private key
 
-```shell
-$ forge fmt
+Check balance of xDAI receiver
+Run the following command in a new terminal, it constantly check if the balance of xDAI receiver is updated on Chiado
+
+```
+node checkBalanceUpdate.js
 ```
 
-### Gas Snapshots
+Relay token and run validator
 
-```shell
-$ forge snapshot
+```
+chmod +x validatorTest.sh
+./validatorTest.sh
 ```
 
-### Anvil
+## Reference
 
-```shell
-$ anvil
-```
+Due to there is no official DAI/USDS deployment from MakerDAO, mock DAI & USDS is deployed.
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+1. DAI: https://sepolia.etherscan.io/address/0x084Ab2ef1cb3A75EB0fDd81636e9A95D15629c37
+2. https://eth-sepolia.blockscout.com/address/0xC441E98bFf10dD35b21AA4Eb22F95E6CAC2B608f
+3. Normal xDAI bridge on Sepolia: 0x314CBF3F4405a2eaDe19af78773881beA37d15f8
+4. USDS upgraded xDAI bridge on Sepolia: 0x10bc9B268d891a0024F7d49953c7C05Ca7F9A3C2
+5. Corresponding xDAI bridge on Chiado: 0x8a3A3F0B9899c161393497e1aC32d6ca99289876

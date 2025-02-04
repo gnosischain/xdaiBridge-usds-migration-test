@@ -1,0 +1,110 @@
+version: '2.4'
+services:
+  rabbit_usds:
+    cpus: 0.3
+    mem_limit: 500m
+    environment: [ 'RABBITMQ_NODENAME=node@rabbit' ]
+    hostname: rabbit
+    image: rabbitmq:3
+    networks:
+      - net_rabbit_bridge_request_usds
+      - net_rabbit_bridge_affirmation_usds
+      - net_rabbit_bridge_senderhome_usds
+      - net_rabbit_bridge_senderforeign_usds
+    restart: unless-stopped
+    volumes: [ '~/bridge_data/rabbitmq_usds:/var/lib/rabbitmq/mnesia' ]
+  redis_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    command: [ redis-server, --appendonly, 'yes' ]
+    hostname: redis
+    image: redis:4
+    networks:
+      - net_db_bridge_request_usds
+      - net_db_bridge_affirmation_usds
+      - net_db_bridge_senderhome_usds
+      - net_db_bridge_senderforeign_usds
+      - net_db_bridge_shutdown_usds
+    restart: unless-stopped
+    volumes: [ '~/bridge_data/redis_usds:/data' ]
+    ports:
+      - "6379:6380"
+  bridge_request_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    image: gnosischain/tokenbridge-oracle:v3.9.0
+    env_file: ./.env.usds
+    restart: unless-stopped
+    entrypoint: yarn watcher:signature-request
+    environment:
+      - ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=${ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY}
+    networks:
+      - net_db_bridge_request_usds
+      - net_rabbit_bridge_request_usds
+  bridge_affirmation_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    image: gnosischain/tokenbridge-oracle:v3.9.0
+    env_file: ./.env.usds
+    restart: unless-stopped
+    entrypoint: yarn watcher:affirmation-request
+    environment:
+      - ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=${ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY}
+    networks:
+      - net_db_bridge_affirmation_usds
+      - net_rabbit_bridge_affirmation_usds
+  bridge_senderhome_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    image: gnosischain/tokenbridge-oracle:v3.9.0
+    env_file: ./.env.usds
+    restart: unless-stopped
+    entrypoint: yarn sender:home
+    environment:
+      - ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=${ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY}
+    networks:
+      - net_db_bridge_senderhome_usds
+      - net_rabbit_bridge_senderhome_usds
+  bridge_senderforeign_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    image: gnosischain/tokenbridge-oracle:v3.9.0
+    env_file: ./.env.usds
+    restart: unless-stopped
+    entrypoint: yarn sender:foreign
+    environment:
+      - ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=${ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY}
+    networks:
+      - net_db_bridge_senderforeign_usds
+      - net_rabbit_bridge_senderforeign_usds
+  bridge_shutdown_usds:
+    cpus: 0.1
+    mem_limit: 500m
+    image: gnosischain/tokenbridge-oracle:v3.9.0
+    env_file: ./.env.usds
+    restart: unless-stopped
+    entrypoint: yarn manager:shutdown
+    environment:
+      - ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=${ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY}
+    networks:
+      - net_db_bridge_shutdown_usds
+
+networks:
+  net_db_bridge_request_usds:
+    driver: bridge
+  net_db_bridge_affirmation_usds:
+    driver: bridge
+  net_db_bridge_senderhome_usds:
+    driver: bridge
+  net_db_bridge_senderforeign_usds:
+    driver: bridge
+  net_db_bridge_shutdown_usds:
+    driver: bridge
+  net_rabbit_bridge_request_usds:
+    driver: bridge
+  net_rabbit_bridge_affirmation_usds:
+    driver: bridge
+  net_rabbit_bridge_senderhome_usds:
+    driver: bridge
+  net_rabbit_bridge_senderforeign_usds:
+    driver: bridge
