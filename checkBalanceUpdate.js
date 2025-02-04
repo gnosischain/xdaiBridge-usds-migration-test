@@ -15,7 +15,6 @@ const client = createPublicClient({
 let previousBalance = null;
 
 async function checkBalance() {
-  console.log(`Checking balance for address ${account.address}`);
   try {
     const currentBalance = await client.getBalance({
       address: account.address,
@@ -31,4 +30,4 @@ async function checkBalance() {
   }
 }
 
-setInterval(checkBalance, 5000); // Check balance every 5 seconds
+setInterval(checkBalance, 30000); // Check balance every 30 seconds

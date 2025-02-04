@@ -6,8 +6,8 @@ This repository simulate the end to end test on Sepolia<->Chiado, with bridge va
 
 1. Relay DAI to normal xDAI bridge (DAI as ERC20 token) on Sepolia.
 2. Run validator that listens to the normal xDAI bridge and call `executeAffirmations` on Chiado.
-3. Mock USDS upgrade by switching interacting contract with USDS upgraded xDAI bridge and run a new set of validator that listens to that new xDAI bridge address, and call `executeAffirmations` on Chiado.
-4. Relay USDS to the new xDAI bridge (USDS as ERC20 token) on Sepolia.
+3. Upgrade bridge to USDS-based bridge
+4. Relay USDS to the new xDAI bridge on Sepolia.
 
 ## Dev
 
@@ -27,9 +27,10 @@ cp .env.example .env
 Setup
 DAI_USER_PRIVATE_KEY= # DAI & USDS holder on Sepolia
 ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY= # bridge validator private key
+BRIDGE_OWNER_PRIVATE_KEY= # bridge owner private key
 
-Check balance of xDAI receiver
-Run the following command in a new terminal, it constantly check if the balance of xDAI receiver is updated on Chiado
+Check balance of xDAI receiver  
+Run the following command in a new terminal, it constantly checks if the balance of xDAI receiver is updated on Chiado
 
 ```
 node checkBalanceUpdate.js
