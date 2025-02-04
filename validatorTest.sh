@@ -23,8 +23,8 @@ forge script script/RelayTokenScript.s.sol:RelayTokenScript --rpc-url  $SEPOLIA_
 echo "Relay DAI to xDAI bridge completed"
 
 echo "Waiting for bridge relaying process"
-# sleep for 300 seconds to process the bridge relay tx
-sleep 300 
+# sleep for 360 seconds to process the bridge relay tx
+sleep 360 
 
 # Perform bridge upgrade
 echo "Executing bridge ugprade"
@@ -34,8 +34,8 @@ forge script script/UpgradeBridgeScript.s.sol:UpgradeBridgeScript --rpc-url  $SE
 echo "Relaying USDS token from foreign bridge"
 forge script script/RelayTokenScript.s.sol:RelayTokenScript --rpc-url  $SEPOLIA_RPC_URL --private-key $DAI_USER_PRIVATE_KEY --legacy --broadcast
 echo "Relay USDS to xDAI bridge completed"
-# sleep for 300 seconds to process the bridge relay tx
-sleep 300 
+# sleep for 360 seconds to process the bridge relay tx
+sleep 360 
 
 
 # For testing only, downgrading bridge to xDAI bridge
