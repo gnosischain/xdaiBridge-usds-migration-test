@@ -1,4 +1,4 @@
-# USDS xDAI bridge migrtion test
+# USDS xDAI bridge migration test
 
 This repository simulate the end to end test on Virtual Ethereum<->Gnosis Chain or Sepolia<->Chiado, with bridge validator running.
 
