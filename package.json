@@ -1,20 +1,27 @@
 {
   "name": "xdai-bridge-usds-migration-test",
   "version": "1.0.0",
-  "description": "**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**",
+  "description": "Test repository for xdai-bridge-usds-migration",
   "main": "index.js",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "testnet:test": "chmod +x scripts/testnetTesting/testnetValidatorTest.sh && ./scripts/testnetTesting/testnetValidatorTest.sh",
+    "tenderly:setup": "node scripts/tenderlyTesting/setup.js",
+    "tenderly:relayTokens": "node scripts/tenderlyTesting/relayTokens.js",
+    "tenderly:test": "chmod +x scripts/tenderlyTesting/tenderlyTesting.sh && ./scripts/tenderlyTesting/tenderlyTesting.sh",
+    "checkXDaiBalance": "node scripts/utils/checkBalanceUpdate.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
     "viem": "^2.22.19"
-  }
+  },
+   "type": "module"
 }
