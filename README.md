@@ -16,16 +16,16 @@ Workflow
 
 3. Run the check balance script in parallel `node checkBalanceUpdate.js`
 
-4. Run bridge validator
+4. Run bridge validator (Note that in order to skip requiredBlockConfirmations in Mainnet, the bridge validator in test environment will sign immediately)[Check here](https://github.com/gnosischain/tokenbridge/commit/c51b8f814ff6007f44012d4bf8a39d64c0f52235)
 
 ```
 env ORACLE_VALIDATOR_ADDRESS=$ORACLE_VALIDATOR_ADDRESS
 env ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=$ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY docker compose -f docker-compose-xdai-bridge-validator.yml up -d --build
 ```
 
-5. Relay tokens from source chain `npm run tenderly:relayTokens`.
+5. Relay tokens from Ethereum `npm run tenderly:relayTokens` & Check if `AddedReceiver` event is emitted from Gnosis Chain.
 
-6. Wait for 30 mins to check if xDAI is minted to receiver on the Gnosis Chain.
+6. Relay xDAI from Gnosis Chain and receiver Dai or Usds on Ethereum `npm run tenderly:relayxDaiAndClaim usds` or `npm run tenderly:relayxDaiAndClaim dai`.
 
 ## Test on Sepolia <-> Chiado
 

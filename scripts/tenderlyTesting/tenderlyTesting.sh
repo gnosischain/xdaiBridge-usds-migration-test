@@ -18,7 +18,6 @@ done
 
 echo "All containers are running. Proceeding..."
 
-
 echo "Setting up the environment for Ethereum and Gnosis Chain post upgrade..."
 
 RUN npm run tenderly:setup
@@ -27,7 +26,12 @@ echo "Relaying tokens from Ethereum"
 
 RUN npm run tenderly:relayTokens
 
-echo "Waiting for 30 mins and check the log from checkXDaiBalance.js"
+echo "Relaying xDAI from Gnosis Chain and claim Usds on Ethereum"
 
-sleep 30*60*60
+RUN npm run tenderly:relayxDaiAndClaim usds
+
+echo "Relaying xDAI from Gnosis Chain and claim Dai on Ethereum"
+
+RUN npm run tenderly:relayxDaiAndClaim dai"
+
 

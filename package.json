@@ -12,6 +12,7 @@
     "testnet:test": "chmod +x scripts/testnetTesting/testnetValidatorTest.sh && ./scripts/testnetTesting/testnetValidatorTest.sh",
     "tenderly:setup": "node scripts/tenderlyTesting/setup.js",
     "tenderly:relayTokens": "node scripts/tenderlyTesting/relayTokens.js",
+    "tenderly:relayxDaiAndClaim": "node scripts/tenderlyTesting/relayxDaiAndClaim.js",
     "tenderly:test": "chmod +x scripts/tenderlyTesting/tenderlyTesting.sh && ./scripts/tenderlyTesting/tenderlyTesting.sh",
     "checkXDaiBalance": "node scripts/utils/checkBalanceUpdate.js"
   },

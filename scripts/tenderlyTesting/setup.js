@@ -1,7 +1,6 @@
 // setup the test environment on both chains
 import "dotenv/config";
 
-import { privateKeyToAccount } from "viem/accounts";
 import axios from "axios";
 
 (async () => {
@@ -169,7 +168,7 @@ import axios from "axios";
     setMockValidatorResponse
   );
 
-  //  set required signature
+  //set required signature(1)
 
   const setRequiredSignaturesPayload = {
     id: 0,
@@ -192,6 +191,52 @@ import axios from "axios";
   console.log(
     "BridgeValidators.setRequiredSignatures(1) called ",
     setRequiredSignaturesResponse
+  );
+
+  const setMockValidatorAMBPayload = {
+    id: 0,
+    jsonrpc: "2.0",
+    method: "eth_sendTransaction",
+    params: [
+      {
+        from: "0x42F38ec5A75acCEc50054671233dfAC9C0E7A3F6",
+        to: "0xed84a648b3c51432ad0fD1C2cD2C45677E9d4064",
+        value: "0x0",
+        data: "0x4d238c8e000000000000000000000000725bc6f18f8cdd7f57a9ab9a9f2ea17a199185e5",
+      },
+    ],
+  };
+
+  const setMockValidatorAMBResponse = await axios.post(
+    process.env.TENDERLY_ETHEREUM_ADMIN_RPC,
+    setMockValidatorAMBPayload
+  );
+  console.log(
+    "BridgeValidators.addValidator called ",
+    setMockValidatorAMBResponse
+  );
+
+  const setRequiredSignaturesAMBPayload = {
+    id: 0,
+    jsonrpc: "2.0",
+    method: "eth_sendTransaction",
+    params: [
+      {
+        from: "0x42F38ec5A75acCEc50054671233dfAC9C0E7A3F6",
+        to: "0xed84a648b3c51432ad0fD1C2cD2C45677E9d4064",
+        value: "0x0",
+        data: "0x7d2b9cc00000000000000000000000000000000000000000000000000000000000000001",
+      },
+    ],
+  };
+
+  const setRequiredSignaturesAMBResponse = await axios.post(
+    process.env.TENDERLY_ETHEREUM_ADMIN_RPC,
+    setRequiredSignaturesAMBPayload
+  );
+  console.log(
+    "BridgeValidators.setRequiredSignatures(1) called ",
+    setRequiredSignaturesAMBResponse
   );
 
   // Add mock validator  in Gnosis Chain
@@ -242,7 +287,51 @@ import axios from "axios";
     setRequiredSignaturesGnosisResponse
   );
 
-  // console.log(`${virtual_mainnet.blockExplorers.default.url}/tx/${txHash}`);
+  const setMockValidatorGnosisAMBPayload = {
+    id: 0,
+    jsonrpc: "2.0",
+    method: "eth_sendTransaction",
+    params: [
+      {
+        from: "0x7a48Dac683DA91e4faa5aB13D91AB5fd170875bd",
+        to: "0xA280feD8D7CaD9a76C8b50cA5c33c2534fFa5008",
+        value: "0x0",
+        data: "0x4d238c8e000000000000000000000000725bc6f18f8cdd7f57a9ab9a9f2ea17a199185e5",
+      },
+    ],
+  };
+
+  const setMockValidatorGnosisAMBResponse = await axios.post(
+    process.env.TENDERLY_GNOSIS_ADMIN_RPC,
+    setMockValidatorGnosisAMBPayload
+  );
+  console.log(
+    "Gnosis Chain: BridgeValidators.addValidator called ",
+    setMockValidatorGnosisAMBResponse
+  );
+
+  const setRequiredSignaturesGnosisAMBPayload = {
+    id: 0,
+    jsonrpc: "2.0",
+    method: "eth_sendTransaction",
+    params: [
+      {
+        from: "0x7a48Dac683DA91e4faa5aB13D91AB5fd170875bd",
+        to: "0xA280feD8D7CaD9a76C8b50cA5c33c2534fFa5008",
+        value: "0x0",
+        data: "0x7d2b9cc00000000000000000000000000000000000000000000000000000000000000001",
+      },
+    ],
+  };
+
+  const setRequiredSignaturesGnosisAMBResponse = await axios.post(
+    process.env.TENDERLY_GNOSIS_ADMIN_RPC,
+    setRequiredSignaturesGnosisAMBPayload
+  );
+  console.log(
+    "Gnosis Chain: BridgeValidators.setRequiredSignatures(1) called ",
+    setRequiredSignaturesGnosisAMBResponse
+  );
 })().catch((e) => {
   console.error(e);
   process.exitCode = 1;
