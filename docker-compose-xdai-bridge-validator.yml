@@ -1,11 +1,11 @@
-version: '2.4'
+version: "2.4"
 services:
   rabbit_xdai:
     cpus: 0.3
     mem_limit: 500m
-    environment: [ 'RABBITMQ_NODENAME=node@rabbit' ]
+    environment: ["RABBITMQ_NODENAME=node@rabbit"]
     hostname: rabbit
-    image: rabbitmq:3
+    image: rabbitmq:3.12-alpine
     platform: linux/amd64
     networks:
       - net_rabbit_bridge_request_xdai
@@ -13,13 +13,13 @@ services:
       - net_rabbit_bridge_senderhome_xdai
       - net_rabbit_bridge_senderforeign_xdai
     restart: unless-stopped
-    volumes: [ '~/bridge_data/rabbitmq_xdai:/var/lib/rabbitmq/mnesia' ]
+    volumes: ["~/bridge_data/rabbitmq_xdai:/var/lib/rabbitmq/mnesia"]
   redis_xdai:
     cpus: 0.1
     mem_limit: 500m
-    command: [ redis-server, --appendonly, 'yes' ]
+    command: [redis-server, --appendonly, "yes"]
     hostname: redis
-    image: redis:4
+    image: redis:4.0.14-alpine
     platform: linux/amd64
     networks:
       - net_db_bridge_request_xdai
@@ -28,13 +28,13 @@ services:
       - net_db_bridge_senderforeign_xdai
       - net_db_bridge_shutdown_xdai
     restart: unless-stopped
-    volumes: [ '~/bridge_data/redis_xdai:/data' ]
+    volumes: ["~/bridge_data/redis_xdai:/data"]
     ports:
       - "6378:6379"
   bridge_request_xdai:
     cpus: 0.1
     mem_limit: 500m
-    image: gnosischain/tokenbridge-oracle:v3.9.0
+    image: gnosischain/tokenbridge-oracle:v3.10.0
     platform: linux/amd64
     env_file: ./.env.xdai
     restart: unless-stopped
@@ -47,7 +47,7 @@ services:
   bridge_affirmation_xdai:
     cpus: 0.1
     mem_limit: 500m
-    image: gnosischain/tokenbridge-oracle:v3.9.0
+    image: gnosischain/tokenbridge-oracle:v3.10.0
     platform: linux/amd64
     env_file: ./.env.xdai
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
   bridge_senderhome_xdai:
     cpus: 0.1
     mem_limit: 500m
-    image: gnosischain/tokenbridge-oracle:v3.9.0
+    image: gnosischain/tokenbridge-oracle:v3.10.0
     platform: linux/amd64
     env_file: ./.env.xdai
     restart: unless-stopped
@@ -73,7 +73,7 @@ services:
   bridge_senderforeign_xdai:
     cpus: 0.1
     mem_limit: 500m
-    image: gnosischain/tokenbridge-oracle:v3.9.0
+    image: gnosischain/tokenbridge-oracle:v3.10.0
     platform: linux/amd64
     env_file: ./.env.xdai
     restart: unless-stopped
@@ -86,7 +86,7 @@ services:
   bridge_shutdown_xdai:
     cpus: 0.1
     mem_limit: 500m
-    image: gnosischain/tokenbridge-oracle:v3.9.0
+    image: gnosischain/tokenbridge-oracle:v3.10.0
     platform: linux/amd64
     env_file: ./.env.xdai
     restart: unless-stopped

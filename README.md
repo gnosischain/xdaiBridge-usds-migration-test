@@ -14,9 +14,7 @@ Workflow
 
 2. Run the setup script `npm run tenderly:setup`
 
-3. Run the check balance script in parallel `node checkBalanceUpdate.js`
-
-4. Run bridge validator (Note that in order to skip requiredBlockConfirmations in Mainnet, the bridge validator in test environment will sign immediately)[Check here](https://github.com/gnosischain/tokenbridge/commit/c51b8f814ff6007f44012d4bf8a39d64c0f52235)
+3. Run bridge validator (Note that in order to skip requiredBlockConfirmations in Mainnet, the bridge validator in test environment will sign immediately)[Check here](https://github.com/gnosischain/tokenbridge/commit/c51b8f814ff6007f44012d4bf8a39d64c0f52235) OR mine 20 blocks on the Network.
 
 ```
 env ORACLE_VALIDATOR_ADDRESS=$ORACLE_VALIDATOR_ADDRESS
@@ -25,9 +23,13 @@ env ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY=$ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY d
 
 5. Relay tokens from Ethereum `npm run tenderly:relayTokens` & Check if `AddedReceiver` event is emitted from Gnosis Chain.
 
-6. Relay xDAI from Gnosis Chain and receiver Dai or Usds on Ethereum `npm run tenderly:relayxDaiAndClaim usds` or `npm run tenderly:relayxDaiAndClaim dai`.
+6. Relay xDAI from Gnosis Chain and receiver Dai or Usds on Ethereum `npm run tenderly:relayxDaiGetDai` or `npm run tenderly:relayxDaiGetUsds`.
+
+> > Please refer to [here](TenderlyVirtualTestNets.md) for the details.
 
 ## Test on Sepolia <-> Chiado
+
+> > This is outdated but kept for reference.
 
 > > This flow is not recommended as there is no official DAI/USDS tokens deployed on Sepolia to simulate the actual workflow. Hence, a mock ERC20 token is deployed for the test.
 

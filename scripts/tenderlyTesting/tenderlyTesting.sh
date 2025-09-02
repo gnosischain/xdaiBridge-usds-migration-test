@@ -28,10 +28,10 @@ RUN npm run tenderly:relayTokens
 
 echo "Relaying xDAI from Gnosis Chain and claim Usds on Ethereum"
 
-RUN npm run tenderly:relayxDaiAndClaim usds
+RUN npm run tenderly:relayxDaiGetUsds
 
 echo "Relaying xDAI from Gnosis Chain and claim Dai on Ethereum"
 
-RUN npm run tenderly:relayxDaiAndClaim dai"
+RUN npm run tenderly:relayxDaiGetDai
 
 

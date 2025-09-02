@@ -57,10 +57,11 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
 ) {
   // fetch the event
 
+  // const UserRequestForSignatureEvent =
+  //   "0xbcb4ebd89690a7455d6ec096a6bfc4a8a891ac741ffe4e678ea2614853248658";
   const UserRequestForSignatureEvent =
-    "0xbcb4ebd89690a7455d6ec096a6bfc4a8a891ac741ffe4e678ea2614853248658";
-
-  const xDAIBridgeHelper = "0x2d51eaa266eafcb59bb36dd3c7e99c515e58113a";
+    "0xe1e0bc4a1db39a361e3589cae613d7b4862e1f9114dd3ff12ff45be395046968";
+  const xDAIBridgeHelper = "0x1ed17B146E0e7799421FAf762955CeE38ad73b44"; // "0xe178Ed14ed62327750A50d1065F5970C84225F42"; actually deployed on Gnosis Chain
 
   const relevantLog = txReceipt.logs.find(
     (log) => log.topics[0] === UserRequestForSignatureEvent
@@ -69,27 +70,39 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
     console.log("Found UserRequestForSignature event");
 
     // Decode the log data
-    // The data contains: recipient (address), value (uint256), nonce (bytes32)
+    // The data contains: recipient (address), value (uint256), nonce (bytes32), token (address)
     const decodedData = {
       recipient: `0x${relevantLog.data.slice(26, 66)}`,
       value: BigInt(`0x${relevantLog.data.slice(66, 130)}`),
       nonce: `0x${relevantLog.data.slice(130, 194)}`,
+      token: `0x${relevantLog.data.slice(218, 258)}`,
     };
 
+    console.log(
+      "decoded",
+      decodedData.recipient,
+      decodedData.value,
+      decodedData.nonce,
+      decodedData.token
+    );
     // call xdai bridge helper
 
     const msgHash = await gnoClient.readContract({
       address: xDAIBridgeHelper,
       abi: [
         parseAbiItem(
-          "function getMessageHash(address _recipient, uint256 _value, bytes32 _origTxHash) returns (bytes32)"
+          "function getMessageHash(address _recipient, uint256 _value, bytes32 _origTxHash, address _token) returns (bytes32)"
         ),
       ],
       functionName: "getMessageHash",
-      args: [decodedData.recipient, decodedData.value, decodedData.nonce],
+      args: [
+        decodedData.recipient,
+        decodedData.value,
+        decodedData.nonce,
+        decodedData.token,
+      ],
     });
     console.log("Message Hash ", msgHash);
-
     const message = await gnoClient.readContract({
       address: xDAIBridgeHelper,
       abi: [
@@ -122,43 +135,19 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
   // call bridge router executeSignatureUSDS
 }
 
-export async function claimTokenOnEthereum(
-  ethClient,
-  message,
-  signatures,
-  token
-) {
-  if (token == "dai") {
-    const { request: claimDaiRequest } = await ethClient.simulateContract({
-      address: BRIDGE_ADDRESSES.BRIDGE_ROUTER,
-      abi: [
-        parseAbiItem(
-          "function executeSignatures(bytes message, bytes signatures)"
-        ),
-      ],
-      functionName: "executeSignatures",
-      args: [message, signatures],
-    });
+export async function claimTokenOnEthereum(ethClient, message, signatures) {
+  const { request: claimDaiRequest } = await ethClient.simulateContract({
+    address: BRIDGE_ADDRESSES.BRIDGE_ROUTER,
+    abi: [
+      parseAbiItem(
+        "function executeSignatures(bytes message, bytes signatures)"
+      ),
+    ],
+    functionName: "executeSignatures",
+    args: [message, signatures],
+  });
 
-    const claimDaiTxHash = await ethClient.writeContract(claimDaiRequest);
+  const claimDaiTxHash = await ethClient.writeContract(claimDaiRequest);
 
-    console.log("Claim Dai Tx Hash ", claimDaiTxHash);
-  } else if (token == "usds") {
-    const { request: claimUsdsRequest } = await ethClient.simulateContract({
-      address: BRIDGE_ADDRESSES.BRIDGE_ROUTER,
-      abi: [
-        parseAbiItem(
-          "function executeSignaturesUSDS(bytes message, bytes signatures)"
-        ),
-      ],
-      functionName: "executeSignaturesUSDS",
-      args: [message, signatures],
-    });
-
-    const claimUsdsTxHash = await ethClient.writeContract(claimUsdsRequest);
-
-    console.log("Claim Usds Tx Hash ", claimUsdsTxHash);
-  } else {
-    console.error("Invalid token type");
-  }
+  console.log("Claim  Tx Hash ", claimDaiTxHash);
 }

@@ -118,7 +118,7 @@ async function main() {
     getUserRequestForAffirmationEvent(relayTokensDaiTxReceipt);
 
     console.log(
-      "Waiting for block confirmation and validator to sign, please check log from checkBalanceUpdate.js"
+      "Waiting for block confirmation and validator to sign, please check for event `AddedReceiver` from the transaction on explorer"
     );
   } catch (err) {
     console.error("Error fetching logs:", err);

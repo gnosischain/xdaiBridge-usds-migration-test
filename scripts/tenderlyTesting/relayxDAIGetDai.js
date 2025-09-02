@@ -34,34 +34,13 @@ const gnoClient = createWalletClient({
   transport: http(),
 }).extend(publicActions);
 
-// read from the npm command to claim USDS or DAI
-// Parse command line arguments to determine which token to claim
-
-// npm run relayxDAIAndClaim dai/usds
+// npm run reltenderly:relayxDaiGetDai
 
 async function main() {
   try {
-    const args = process.argv.slice(2);
-    let tokenToClaim = "";
+    console.log("Relaying xDAI and get DAI on Ethereum...");
 
-    if (args.length > 0) {
-      const arg = args[0].toLowerCase();
-      if (arg === "dai" || arg === "usds") {
-        tokenToClaim = arg;
-        console.log(`Will claim ${tokenToClaim.toUpperCase()} tokens`);
-      } else {
-        console.error('Invalid token specified. Please use "dai" or "usds"');
-        process.exit(1);
-      }
-    } else {
-      console.log("No token specified, defaulting to claiming USDS");
-      tokenToClaim = "usds";
-    }
-
-    console.log("Relaying xDAI...");
-
-    // BridgeRouter relayTokens
-
+    // xDAI Home Bridge relayTokens
     const { request: relayTokensxDaiRequest } =
       await gnoClient.simulateContract({
         address: BRIDGE_ADDRESSES.XDAI_HOME_BRIDGE,
@@ -112,7 +91,7 @@ async function main() {
         relayTokensxDaiTxReceipt
       );
 
-    await claimTokenOnEthereum(ethClient, message, signatures, tokenToClaim);
+    await claimTokenOnEthereum(ethClient, message, signatures);
   } catch (err) {
     console.error("Error fetching logs:", err);
   }
