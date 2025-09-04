@@ -2,7 +2,7 @@
 import "dotenv/config";
 
 import axios from "axios";
-import { jsonRpc } from "viem/nonce";
+
 // 1. HomeBridgeErcToNative: 0xCb895Ac6cF24170FaFa5a704aE69ECA9C8D98EDd
 // 2. USDSDepositContract: 0x2b7a0437db808b86a4aec38c865e6a92534eefdc
 // 3. BridgeRouter new impl: 0x66a837030aed8d437b5414f8ddf48b1005ca886b

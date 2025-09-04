@@ -58,7 +58,7 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
   // fetch the event
 
   // const UserRequestForSignatureEvent =
-  //   "0xbcb4ebd89690a7455d6ec096a6bfc4a8a891ac741ffe4e678ea2614853248658";
+  //   "0xbcb4ebd89690a7455d6ec096a6bfc4a8a891ac741ffe4e678ea2614853248658"; //  UserRequestForSignature event signature before USDS upgrade
   const UserRequestForSignatureEvent =
     "0xe1e0bc4a1db39a361e3589cae613d7b4862e1f9114dd3ff12ff45be395046968";
   const xDAIBridgeHelper = "0x1ed17B146E0e7799421FAf762955CeE38ad73b44"; // "0xe178Ed14ed62327750A50d1065F5970C84225F42"; actually deployed on Gnosis Chain
@@ -78,13 +78,6 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
       token: `0x${relevantLog.data.slice(218, 258)}`,
     };
 
-    console.log(
-      "decoded",
-      decodedData.recipient,
-      decodedData.value,
-      decodedData.nonce,
-      decodedData.token
-    );
     // call xdai bridge helper
 
     const msgHash = await gnoClient.readContract({
@@ -132,7 +125,6 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
 
   // wait for the signature
   // call bridge router executeSignature
-  // call bridge router executeSignatureUSDS
 }
 
 export async function claimTokenOnEthereum(ethClient, message, signatures) {
