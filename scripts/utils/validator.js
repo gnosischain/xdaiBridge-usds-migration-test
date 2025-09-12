@@ -61,7 +61,7 @@ export async function getUserRequestForSignatureEventAndGetSignatures(
   //   "0xbcb4ebd89690a7455d6ec096a6bfc4a8a891ac741ffe4e678ea2614853248658"; //  UserRequestForSignature event signature before USDS upgrade
   const UserRequestForSignatureEvent =
     "0xe1e0bc4a1db39a361e3589cae613d7b4862e1f9114dd3ff12ff45be395046968";
-  const xDAIBridgeHelper = "0x1ed17B146E0e7799421FAf762955CeE38ad73b44"; // "0xe178Ed14ed62327750A50d1065F5970C84225F42"; actually deployed on Gnosis Chain
+  const xDAIBridgeHelper = "0xe30269bc61E677cD60aD163a221e464B7022fbf5";
 
   const relevantLog = txReceipt.logs.find(
     (log) => log.topics[0] === UserRequestForSignatureEvent
